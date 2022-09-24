@@ -1,37 +1,46 @@
-﻿string wanted = "sus";
+﻿
+var now = Environment.CurrentDirectory;
+
+string wanted = "sus";
+string wantedPath = Path.Join(now, "wanted.txt");
+if (File.Exists(wantedPath))
+    wanted = File.ReadAllText(wantedPath);
+else
+    File.WriteAllText(wantedPath, wanted);
 
 char[] charsets = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
 
-int currentLength = 3;
+int currentLength = 1;
+
+
 var maxLength = 26;
-string path = $"C:\\{wanted}\\latest.txt";
-char[] input = "``````````````````````````".ToCharArray();
 
-if (!Directory.Exists(path))
-    Directory.CreateDirectory(path);
+StringBuilder bd = new();
+bd.Append('`', maxLength);
+var input = bd.ToString().ToArray();
 
-if (File.Exists(path))
+string progress = $"{now}\\latest.txt";
+if (File.Exists(progress))
 {
-    using var reader = File.OpenText(path);
+    using var reader = File.OpenText(progress);
     input = reader.ReadToEnd().ToCharArray();
     reader.Close();
-    File.Delete(path);
 }
 
 Console.CancelKeyPress += TrySave;
 
 void TrySave(object? sender, ConsoleCancelEventArgs e)
 {
-    if (File.Exists(path))
-        File.Delete(path);
-    using StreamWriter writer = File.CreateText(path);
+    if (File.Exists(progress))
+        File.Delete(progress);
+    using StreamWriter writer = File.CreateText(progress);
     writer.Write(input);
     writer.Close();
     e.Cancel = false;
     Environment.Exit(69);
 }
 
-do
+while (true)
 {
     Console.CursorLeft = 0;
     Console.CursorTop = 0;
@@ -39,14 +48,13 @@ do
     text = text.Replace("`", string.Empty);
     Console.Write(text);
 
-    if (text.Contains("sus"))
+    if (text.Contains(wanted))
     {
         Console.CursorLeft = 0;
         Console.CursorTop = 1;
         Console.Write($"Latest {wanted} word: {text}");
-        using StreamWriter sw = File.AppendText(@$"C:\{wanted}\{wanted}.txt");
+        using StreamWriter sw = File.AppendText(@$"{now}\{wanted}.txt");
         sw.Write($"{text}, ");
         sw.Close();
     }
 }
-while (currentLength < maxLength);
