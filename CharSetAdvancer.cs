@@ -2,16 +2,13 @@
 {
     public static string Advance(ref char[] input, ref int currentLength)
     {
-        int back = input.Length -1;
-        bool lengthUpReq = true;
+        var back = input.Length -1;
 
-        input[input.Length - 1]++;
+        input[input.Length - 1]++; //Increase last character by one
         do
         {
             if (input[back] != 'z')
             {
-                if (back > input.Length - currentLength)
-                    lengthUpReq = false;
                 if (back <= input.Length - currentLength)
                     currentLength++;
             }
