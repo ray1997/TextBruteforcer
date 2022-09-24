@@ -93,6 +93,11 @@ while (!input.SequenceEqual(target))
         sw.Write($"{text}, ");
         sw.Close();
     }
+//#if DEBUG
+//    using var iterateWriter = File.AppendText(Path.Join(now, $"iterate.txt"));
+//    iterateWriter.Write($"{text}, ");
+//    iterateWriter.Close();
+//#endif
 }
 
 if (input.SequenceEqual(target))
